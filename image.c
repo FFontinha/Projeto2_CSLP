@@ -18,10 +18,11 @@ void changeColorPPM(Image *img)
 void toGrey(Image *img)
 {
     int i, media;
+    img->dataGray = (GrayPixel*)malloc(img->w * img->h * sizeof(GrayPixel));
     if(img){
         for(i=0;i<img->w*img->h;i++){
             media = (img->dataRGB[i].r + img->dataRGB[i].g + img->dataRGB[i].b)/3;
-            img->dataRGB[i].r=media;
+            img->dataGray[i].gray=media;
         }
     }
 }
@@ -38,7 +39,7 @@ void writeGrey(const char *filename, Image *img)
 
     //write the header file
     //image format
-    fprintf(fp, "P4\n");
+    fprintf(fp, "P5\n");
 
     //image size
     fprintf(fp, "%d %d\n",img->h,img->w);
@@ -47,7 +48,7 @@ void writeGrey(const char *filename, Image *img)
     fprintf(fp, "%d\n",255);
 
     // pixel data
-    fwrite(img->dataRGB, 1 * img->h, img->w, fp);
+    fwrite(img->dataGray, 1 * img->h, img->w, fp);
     fclose(fp);
 }
 
@@ -145,7 +146,7 @@ int main() {
     printf("%d",img->dataRGB[0].r);
 
     toGrey(img);
-    writePPM("test.ppm",img);
+    writeGrey("test.ppm",img);
 
 
     return 0;
