@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include<stdlib.h>
+#include<stdbool.h>
 #include "image.h"
 
 Image *readImage(char *file){
@@ -59,55 +60,54 @@ Image *readImage(char *file){
     while (fgetc(fp) != '\n') ;
     //memory allocation for pixel data
     if (buff[1] == '6'){
-        img->dataRGB = (RGBPixel*)malloc(img->w * img->h * sizeof(RGBPixel));
-        if (fread(img->dataRGB, 3 * img->w, img->h, fp) != img->h) {
-            fprintf(stderr, "Error loading image '%s'\n", file);
-            exit(1);
+        img->dataRGB = (RGBPixel**)malloc(img->h * sizeof(RGBPixel*));
+        for(int i = 0; i <img->h; i++){
+            img->dataRGB[i] = (RGBPixel*)malloc(img->w * sizeof(RGBPixel));
+        }
+        for(int i = 0; i <img->h; i++){
+                fread(img->dataRGB[i], 3, img->w, fp);
         }
     }
     else if(buff[1] == '5'){
-        img->dataGray = (GrayPixel*)malloc(img->w * img->h * sizeof(GrayPixel));
-        if (fread(img->dataGray, img->w, img->h, fp) != img->h) {
-            fprintf(stderr, "Error loading image '%s'\n", file);
-            exit(1);
+        img->dataGray = (GrayPixel**)malloc(img->h * sizeof(GrayPixel*));
+        for(int i = 0; i <img->h; i++){
+            img->dataGray[i] = (GrayPixel*)malloc(img->w * sizeof(GrayPixel));
+        }
+        for(int i = 0; i <img->w; i++){
+            fread(img->dataGray[i], 1 , img->w, fp);
         }
     }
-
 
     return img;
 }
 
 void changeIntensity(Image *img, int intensity)
 {
-    int i;
+    int i,j;
     if(img){
-        for(i=0;i<img->w*img->h;i++){
-            if((img->dataRGB[i].r + intensity) < 0){;
-                img->dataRGB[i].r = 0;
-            }
-            else if((img->dataRGB[i].r + intensity) > 255){
-                img->dataRGB[i].r = 255;
-            }
-            else{
-                img->dataRGB[i].r += intensity;
-            }
-            if((img->dataRGB[i].g + intensity) < 0){
-                img->dataRGB[i].g = 0;
-            }
-            else if((img->dataRGB[i].g + intensity) > 255){
-                img->dataRGB[i].g = 255;
-            }
-            else{
-                img->dataRGB[i].g += intensity;
-            }
-            if((img->dataRGB[i].b + intensity) < 0){
-                img->dataRGB[i].b = 0;
-            }
-            else if((img->dataRGB[i].b + intensity) > 255){
-                img->dataRGB[i].b = 255;
-            }
-            else{
-                img->dataRGB[i].b += intensity;
+        for(i=0;i<img->h;i++){
+            for(j=0;j<img->w;j++) {
+                if ((img->dataRGB[i][j].r + intensity) < 0) { ;
+                    img->dataRGB[i][j].r = 0;
+                } else if ((img->dataRGB[i][j].r + intensity) > 255) {
+                    img->dataRGB[i][j].r = 255;
+                } else {
+                    img->dataRGB[i][j].r += intensity;
+                }
+                if ((img->dataRGB[i][j].g + intensity) < 0) {
+                    img->dataRGB[i][j].g = 0;
+                } else if ((img->dataRGB[i][j].g + intensity) > 255) {
+                    img->dataRGB[i][j].g = 255;
+                } else {
+                    img->dataRGB[i][j].g += intensity;
+                }
+                if ((img->dataRGB[i][j].b + intensity) < 0) {
+                    img->dataRGB[i][j].b = 0;
+                } else if ((img->dataRGB[i][j].b + intensity) > 255) {
+                    img->dataRGB[i][j].b = 255;
+                } else {
+                    img->dataRGB[i][j].b += intensity;
+                }
             }
         }
     }
@@ -115,48 +115,103 @@ void changeIntensity(Image *img, int intensity)
 
 void changeIntensityGray(Image *img, int intensity)
 {
-    int i;
+    int i,j;
     if(img){
-        for(i=0;i<img->w*img->h;i++){
-            if((img->dataGray[i].gray + intensity) < 0){;
-                img->dataGray[i].gray = 0;
+        for(i=0;i<img->h;i++){
+            for(j=0;j<img->w;j++) {
+                if ((img->dataGray[i][j].gray + intensity) < 0) { ;
+                    img->dataGray[i][j].gray = 0;
+                } else if ((img->dataGray[i][j].gray + intensity) > 255) {
+                    img->dataGray[i][j].gray = 255;
+                } else {
+                    img->dataGray[i][j].gray += intensity;
+                }
             }
-            else if((img->dataGray[i].gray + intensity) > 255){
-                img->dataGray[i].gray = 255;
-            }
-            else{
-                img->dataGray[i].gray += intensity;
-            }
-
         }
     }
 }
 
 void toGrey(Image *img)
 {
-    int i;
-    img->dataGray = (GrayPixel*)malloc(img->w * img->h * sizeof(GrayPixel));
+    int i,j;
+    img->dataGray = (GrayPixel**)malloc(img->h * sizeof(GrayPixel*));
+    for(int i = 0; i <img->w; i++){
+        img->dataGray[i] = (GrayPixel*)malloc(img->w * sizeof(GrayPixel));
+    }
     if(img){
-        for(i=0;i<img->w*img->h;i++){
-            img->dataGray[i].gray = (img->dataRGB[i].r + img->dataRGB[i].g + img->dataRGB[i].b)/3;
+        for(i=0;i<img->h;i++){
+            for(j=0;j<img->w;j++) {
+                img->dataGray[i][j].gray = (img->dataRGB[i][j].r + img->dataRGB[i][j].g + img->dataRGB[i][j].b) / 3;
+            }
         }
     }
 }
 
+/*
+array;
+for(i=0;i<img->h;i++){
+    for(j=0;j<img->w;j++) {
+        array[img->dataGray[i][j]] += 1;
+    }
+}
+ */
+
+
+
+
+
+void toBin(Image *img)
+{
+    int i,j;
+    int bits = 0;
+    unsigned char byte[8] ;
+    unsigned char output = 0;
+    img->dataBin = (BinPixel**)malloc(img->h * sizeof(BinPixel*));
+    for(int i = 0; i <img->w; i++){
+        img->dataBin[i] = (BinPixel*)malloc(img->w * sizeof(BinPixel));
+    }
+    if(img){
+        for(i=0;i<img->h;i++) {
+            for (j = 0; j < img->w; j++) {
+                if (img->dataGray[i][j].gray < 127) {
+                    byte[bits] = 0;
+                } else if (img->dataGray[i][j].gray >= 127) {
+                    byte[bits] = 1;
+                }
+                bits += 1;
+                if (bits == 7) {
+                    bits = 0;
+                    for (int i = 0; i < 8; i++) {
+                        if (byte[i] == 1) {
+                            output |= (1 << (7 - i));
+                            printf("%d", output);
+                        }
+                    }
+                    img->dataBin[i][j].bin = output;
+                }
+            }
+        }
+    }
+}
+
+
 void toGreySpitted(Image *img, char *color)
 {
-    int i;
-    img->dataGray = (GrayPixel*)malloc(img->w * img->h * sizeof(GrayPixel));
+    int i,j;
+    img->dataGray = (GrayPixel**)malloc(img->h * sizeof(GrayPixel*));
+    for(int i = 0; i <img->w; i++){
+        img->dataGray[i] = (GrayPixel*)malloc(img->w * sizeof(GrayPixel));
+    }
     if(img){
-        for(i=0;i<img->w*img->h;i++){
-            if(color == "red"){
-                img->dataGray[i].gray = (img->dataRGB[i].r);
-            }
-            else if(color == "green"){
-                img->dataGray[i].gray = (img->dataRGB[i].g);
-            }
-            else if(color == "blue"){
-                img->dataGray[i].gray = (img->dataRGB[i].b);
+        for(i=0;i<img->h;i++){
+            for(j=0;j<img->w;j++) {
+                if (color == "red") {
+                    img->dataGray[i][j].gray = (img->dataRGB[i][j].r);
+                } else if (color == "green") {
+                    img->dataGray[i][j].gray = (img->dataRGB[i][j].g);
+                } else if (color == "blue") {
+                    img->dataGray[i][j].gray = (img->dataRGB[i][j].b);
+                }
             }
         }
     }
@@ -183,7 +238,9 @@ void writeGrey(const char *filename, Image *img)
     fprintf(fp, "%d\n",255);
 
     // pixel data
-    fwrite(img->dataGray, 1 * img->h, img->w, fp);
+    for(int i = 0; i <img->h; i++){
+        fwrite(img->dataGray[i], 1, img->w, fp);
+    }
     fclose(fp);
 }
 
@@ -208,7 +265,36 @@ void writePPM(const char *filename, Image *img)
     fprintf(fp, "%d\n",255);
 
     // pixel data
-    fwrite(img->dataRGB, 3 * img->h, img->w, fp);
+    for(int i = 0; i <img->h; i++){
+        fwrite(img->dataRGB[i], 3, img->w, fp);
+    }
+    fclose(fp);
+}
+
+void writeBin(const char *filename, Image *img)
+{
+    FILE *fp;
+    //open file for output
+    fp = fopen(filename, "wb");
+    if (!fp) {
+        fprintf(stderr, "Unable to open file '%s'\n", filename);
+        exit(1);
+    }
+
+    //write the header file
+    //image format
+    fprintf(fp, "P4\n");
+
+    //image size
+    fprintf(fp, "%d %d\n",img->h,img->w);
+
+    // rgb component depth
+    fprintf(fp, "%d\n",255);
+
+    // pixel data
+    for(int i = 0; i <img->h; i++){
+        fwrite(img->dataBin[i], 1, img->w, fp);
+    }
     fclose(fp);
 }
 
@@ -231,7 +317,8 @@ int main() {
     Image *img2 = readImage("grayLena.ppm");
     changeIntensityGray(img2, 40);
     writeGrey("grayIntensity.ppm",img2);
-
+    toBin(img2);
+    writeBin("binLena.pbm",img2);
 
 
     return 0;

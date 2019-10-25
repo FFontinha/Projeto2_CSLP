@@ -18,14 +18,14 @@ typedef  struct {
 } GrayPixel;
 
 typedef struct {
-    unsigned char bin; // 0 or 1
+    unsigned char bin; // 8 bits (0 or 1)
 } BinPixel;
 
 typedef struct {
     int w, h;
-    RGBPixel *dataRGB;
-    GrayPixel *dataGray;
-    BinPixel *dataBin;
+    RGBPixel **dataRGB;
+    GrayPixel **dataGray;
+    BinPixel **dataBin;
 
 } Image;
 
@@ -35,7 +35,6 @@ typedef struct {
 
 Image * LoadFromFile(char *);
 
-void changeColorPPM(Image *img);
 void toGrey(Image *img);
 void writeGrey(const char *filename, Image *img);
 
