@@ -116,16 +116,14 @@ void changeIntensity(Image *img, int intensity)
 void changeIntensityGray(Image *img, int intensity)
 {
     int i,j;
-    if(img){
-        for(i=0;i<img->h;i++){
-            for(j=0;j<img->w;j++) {
-                if ((img->dataGray[i][j].gray + intensity) < 0) { ;
-                    img->dataGray[i][j].gray = 0;
-                } else if ((img->dataGray[i][j].gray + intensity) > 255) {
-                    img->dataGray[i][j].gray = 255;
-                } else {
-                    img->dataGray[i][j].gray += intensity;
-                }
+    for(i=0;i<img->h;i++){
+        for(j=0;j<img->w;j++) {
+            if ((img->dataGray[i][j].gray + intensity) < 0) { ;
+                img->dataGray[i][j].gray = 0;
+            } else if ((img->dataGray[i][j].gray + intensity) > 255) {
+                img->dataGray[i][j].gray = 255;
+            } else {
+                img->dataGray[i][j].gray += intensity;
             }
         }
     }
@@ -135,16 +133,15 @@ void toGrey(Image *img)
 {
     int i,j;
     img->dataGray = (GrayPixel**)malloc(img->h * sizeof(GrayPixel*));
-    for(int i = 0; i <img->w; i++){
+    for(i = 0; i <img->w; i++){
         img->dataGray[i] = (GrayPixel*)malloc(img->w * sizeof(GrayPixel));
     }
-    if(img){
-        for(i=0;i<img->h;i++){
-            for(j=0;j<img->w;j++) {
-                img->dataGray[i][j].gray = (img->dataRGB[i][j].r + img->dataRGB[i][j].g + img->dataRGB[i][j].b) / 3;
-            }
+    for(i=0;i<img->h;i++){
+        for(j=0;j<img->w;j++) {
+            img->dataGray[i][j].gray = (img->dataRGB[i][j].r + img->dataRGB[i][j].g + img->dataRGB[i][j].b) / 3;
         }
     }
+
 }
 
 /*
@@ -162,35 +159,40 @@ for(i=0;i<img->h;i++){
 
 void toBin(Image *img)
 {
-    int i,j;
+    int i,j,l;
     int bits = 0;
     unsigned char byte[8] ;
     unsigned char output = 0;
     img->dataBin = (BinPixel**)malloc(img->h * sizeof(BinPixel*));
-    for(int i = 0; i <img->w; i++){
+    for(i = 0; i <img->w; i++){
         img->dataBin[i] = (BinPixel*)malloc(img->w * sizeof(BinPixel));
     }
-    if(img){
-        for(i=0;i<img->h;i++) {
-            for (j = 0; j < img->w; j++) {
-                if (img->dataGray[i][j].gray < 127) {
-                    byte[bits] = 0;
-                } else if (img->dataGray[i][j].gray >= 127) {
-                    byte[bits] = 1;
-                }
-                bits += 1;
-                if (bits == 7) {
-                    bits = 0;
-                    for (int i = 0; i < 8; i++) {
-                        if (byte[i] == 1) {
-                            output |= (1 << (7 - i));
-                            printf("%d", output);
-                        }
-                    }
-                    img->dataBin[i][j].bin = output;
-                }
+
+    for(i=0;i<img->h;i++) {
+        l = 0;
+        for (j = 0; j < img->w; j++) {
+            if (img->dataGray[i][j].gray < 127) {
+                byte[bits] = 1;
+            } else if (img->dataGray[i][j].gray >= 127) {
+                byte[bits] = 0;
             }
+            bits += 1;
+            if (bits == 8) {
+                bits = 0;
+                for (int k = 0; k < 7; k++) {
+                    printf("%d",byte[k]);
+                    if (byte[k] == 1) {
+                        output |= (1 << (7 - k));
+                    }
+                }
+                img->dataBin[i][l].bin = output;
+                l += 1;
+                output = 0;
+
+            };
+            //printf("\n");
         }
+        printf("\n");
     }
 }
 
@@ -202,16 +204,15 @@ void toGreySpitted(Image *img, char *color)
     for(int i = 0; i <img->w; i++){
         img->dataGray[i] = (GrayPixel*)malloc(img->w * sizeof(GrayPixel));
     }
-    if(img){
-        for(i=0;i<img->h;i++){
-            for(j=0;j<img->w;j++) {
-                if (color == "red") {
-                    img->dataGray[i][j].gray = (img->dataRGB[i][j].r);
-                } else if (color == "green") {
-                    img->dataGray[i][j].gray = (img->dataRGB[i][j].g);
-                } else if (color == "blue") {
-                    img->dataGray[i][j].gray = (img->dataRGB[i][j].b);
-                }
+
+    for(i=0;i<img->h;i++){
+        for(j=0;j<img->w;j++) {
+            if (color == "red") {
+                img->dataGray[i][j].gray = (img->dataRGB[i][j].r);
+            } else if (color == "green") {
+                img->dataGray[i][j].gray = (img->dataRGB[i][j].g);
+            } else if (color == "blue") {
+                img->dataGray[i][j].gray = (img->dataRGB[i][j].b);
             }
         }
     }
@@ -239,7 +240,7 @@ void writeGrey(const char *filename, Image *img)
 
     // pixel data
     for(int i = 0; i <img->h; i++){
-        fwrite(img->dataGray[i], 1, img->w, fp);
+        fwrite(img->dataGray[i], sizeof(GrayPixel), img->w, fp);
     }
     fclose(fp);
 }
@@ -266,7 +267,7 @@ void writePPM(const char *filename, Image *img)
 
     // pixel data
     for(int i = 0; i <img->h; i++){
-        fwrite(img->dataRGB[i], 3, img->w, fp);
+        fwrite(img->dataRGB[i], sizeof(RGBPixel), img->w, fp);
     }
     fclose(fp);
 }
@@ -293,7 +294,7 @@ void writeBin(const char *filename, Image *img)
 
     // pixel data
     for(int i = 0; i <img->h; i++){
-        fwrite(img->dataBin[i], 1, img->w, fp);
+        fwrite(img->dataBin[i], sizeof(BinPixel), img->w / 8, fp);
     }
     fclose(fp);
 }
