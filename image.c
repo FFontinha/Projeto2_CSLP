@@ -179,8 +179,8 @@ void toBin(Image *img)
             bits += 1;
             if (bits == 8) {
                 bits = 0;
-                for (int k = 0; k < 7; k++) {
-                    printf("%d",byte[k]);
+                for (int k = 0; k < 8; k++) {
+                    //printf("%d",byte[k]);
                     if (byte[k] == 1) {
                         output |= (1 << (7 - k));
                     }
@@ -289,11 +289,8 @@ void writeBin(const char *filename, Image *img)
     //image size
     fprintf(fp, "%d %d\n",img->h,img->w);
 
-    // rgb component depth
-    fprintf(fp, "%d\n",255);
-
     // pixel data
-    for(int i = 0; i <img->h; i++){
+    for(int i = 0; i < img->h; i++){
         fwrite(img->dataBin[i], sizeof(BinPixel), img->w / 8, fp);
     }
     fclose(fp);
