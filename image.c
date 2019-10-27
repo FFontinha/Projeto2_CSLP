@@ -1,8 +1,21 @@
+/** @file image.c
+ * @brief
+ *
+ * @author Catarina Borges, 73865
+ * @author Francisco Aires, 76490
+ * @bug
+ *
+ */
 #include <stdio.h>
-#include<stdlib.h>
-#include<stdbool.h>
+#include <stdlib.h>
+#include <stdbool.h>
 #include "image.h"
 
+/**
+ * @brief Reads the image
+ * @param file
+ * @return
+ */
 Image *readImage(char *file){
     FILE *fp;
     Image *img;
@@ -26,7 +39,6 @@ Image *readImage(char *file){
         fprintf(stderr, "Invalid image format (must be 'P6')\n");
         exit(1);
     }*/
-
 
     //alloc memory form image
     img = (Image *)malloc(sizeof(Image));
@@ -152,10 +164,6 @@ for(i=0;i<img->h;i++){
     }
 }
  */
-
-
-
-
 
 void toBin(Image *img)
 {
