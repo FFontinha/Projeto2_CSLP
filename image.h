@@ -12,34 +12,37 @@
 #ifndef IMAGES_IMAGE_H
 #define IMAGES_IMAGE_H
 
-/*
- *Data Structure of RGB Pixel
- * @param r  - Red pixel
- * @param g - Green pixel
- * @param b - Blue pixel */
+
 typedef struct  {
+    /**
+     *Data Structure of RGB Pixel
+     * @param r  - Red pixel
+     * @param g - Green pixel
+     * @param b - Blue pixel */
     unsigned char r,g,b; // 0-255
 } RGBPixel;
 
-/*Data Structure of Gray Pixel
- * @param gray - Gray pixel (only one pixel)*/
+
 typedef  struct {
+    /**Data Structure of Gray Pixel
+     * @param gray - Gray pixel (only one pixel)*/
     unsigned char gray; // 0-255
 } GrayPixel;
 
-/*Data Structure of Binary Pixel
- * @param bin - Binary pixel takes a binary value 1 or 0*/
+
 typedef struct {
+    /**Data Structure of Binary Pixel
+     * @param bin - Binary pixel takes a binary value 1 or 0*/
     unsigned char bin; // 8 bits (0 or 1)
 } BinPixel;
 
-/*Data Structure of an Image
- * @param w - image width
- * @param h - image height
- * @param dataRGB - bi-dimensional type RGPPixel
- * @param dataGray - bi-dimensional type GrayPixel
- * @param dataBin - bi-dimensional type BinPixel*/
 typedef struct {
+    /** Data Structure of an Image
+     * @param w - image width
+     * @param h - image height
+     * @param dataRGB - bi-dimensional type RGPPixel
+     * @param dataGray - bi-dimensional type GrayPixel
+     * @param dataBin - bi-dimensional type BinPixel*/
     int w, h;
     RGBPixel **dataRGB;
     GrayPixel **dataGray;
@@ -49,8 +52,6 @@ typedef struct {
 
 //Image * CreateImage(int w, int h);
 //Image * LoadFromFile(char *);
-/*
- * */
 Image *readImage(char *file);
 
 void changeIntensity(Image *img, int intensity);

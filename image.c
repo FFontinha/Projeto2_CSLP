@@ -11,12 +11,12 @@
 #include <stdbool.h>
 #include "image.h"
 
-/**
- * @brief Reads the image
- * @param file
- * @return
- */
+
 Image *readImage(char *file){
+        /** Reads the image file, allocates memory for pixel data
+         * for each type of image, P6, P5 and binary.
+         * @param char *file
+         */
     FILE *fp;
     Image *img;
     char buff[16];
@@ -24,11 +24,11 @@ Image *readImage(char *file){
 
     //Open file
     fp = fopen(file, "rb");
+
     if (!fp)
     {
         fprintf(stderr, "Unable to open file %s", file);
     }
-
     //read image format
     if (!fgets(buff, sizeof(buff) ,fp)) {
         perror("lena.ppm");
@@ -40,7 +40,7 @@ Image *readImage(char *file){
         exit(1);
     }*/
 
-    //alloc memory form image
+    //alloc memory from image
     img = (Image *)malloc(sizeof(Image));
     if (!img) {
         fprintf(stderr, "Unable to allocate memory\n");
@@ -69,7 +69,8 @@ Image *readImage(char *file){
         exit(1);
     }
 
-    while (fgetc(fp) != '\n') ;
+    while (fgetc(fp) != '\n');
+
     //memory allocation for pixel data
     if (buff[1] == '6'){
         img->dataRGB = (RGBPixel**)malloc(img->h * sizeof(RGBPixel*));
@@ -95,6 +96,10 @@ Image *readImage(char *file){
 
 void changeIntensity(Image *img, int intensity)
 {
+    /** changeIntensity changes the intensity of RGB images
+     * @param Image *img which is the image file
+     * @param int intensity is the intensity we want to change it to
+     */
     int i,j;
     if(img){
         for(i=0;i<img->h;i++){
@@ -127,6 +132,10 @@ void changeIntensity(Image *img, int intensity)
 
 void changeIntensityGray(Image *img, int intensity)
 {
+     /** changeIntensityGray changes the intensity of Gray images
+     * @param Image *img which is the image file
+     * @param int intensity is the intensity we want to change it to
+     */
     int i,j;
     for(i=0;i<img->h;i++){
         for(j=0;j<img->w;j++) {
@@ -143,6 +152,9 @@ void changeIntensityGray(Image *img, int intensity)
 
 void toGrey(Image *img)
 {
+    /** toGrey changes the an image to Gray
+    * @param Image *img which is the image file we want to change to gray
+    */
     int i,j;
     img->dataGray = (GrayPixel**)malloc(img->h * sizeof(GrayPixel*));
     for(i = 0; i <img->w; i++){
@@ -167,6 +179,9 @@ for(i=0;i<img->h;i++){
 
 void toBin(Image *img)
 {
+    /** toBin changes an image to binary
+    * @param Image *img which is the image file we want to change
+    */
     int i,j,l;
     int bits = 0;
     unsigned char byte[8] ;
