@@ -402,12 +402,12 @@ void printMenu(void)
     printf("-------------------------------------\n");
     printf("|                MENU                |\n");
     printf("-------------------------------------\n");
-    printf("| 1 : Change Image to Gray\t|\n");
-    printf("| 2 : Change Image to RGB\t|\n");
-    printf("| 3 : Change Image to Binary\t|\n");
-    printf("| 4 : Change Image intensity\t|\n");
-    printf("| 5 : Filter your Image, with an average filter|\n");
-    printf("| 6 : Watermark the Image|\n");
+    printf("| 1 : Change Image to Gray\t\t\t|\n");
+    printf("| 2 : Change Image to Binary\t\t\t|\n");
+    printf("| 3 : Change Image intensity\t\t\t|\n");
+    printf("| 4 : Split the color image into the grayscale image for channel you choose\t|\n");
+    printf("| 5 : Filter your Image, with an average filter\t\t|\n");
+    printf("| 6 : Watermark the Image\t\t\t|\n");
     printf("| 0 : Exit\t\t\t|\n");
     printf("-------------------------------------\n\n\r");
 }
@@ -418,12 +418,99 @@ void Menu(void)
      * @param none
      *
      */
-     unsigned int number = getchar();
+    unsigned int number = getchar();
 
-     switch (number)
-     {
-         case 1:;
-     }
+    switch (number)
+    {
+        case 1:
+        {
+            printf("\nChoose the image you want to change: ");
+            unsigned char image = getchar();
+            printf("\nName the new gray image: ");
+            unsigned char newImage = getchar();
+
+            Image *img = readImage(image);
+            toGrey(img);
+            writeGrey(newImage,img);
+
+            break;
+        }
+        case 2:
+        {
+            printf("\nChoose the image you want to change: ");
+            unsigned char image = getchar();
+            printf("\nName the new binary image: ");
+            unsigned char newImage = getchar();
+
+            Image *img = readImage(image);
+            toBin(img);
+            writeBin(newImage,img);
+
+            break;
+        }
+        case 3:
+        {
+            printf("\nChoose the image you want to change the intensity of: ");
+            unsigned char image = getchar();
+            printf("\nName the new image: ");
+            unsigned char newImage = getchar();
+
+            printf("\n Choose the intensity from -255 to 255: ");
+            int intensity = getchar();
+
+            /*if(intensity < -255 || intensity > 255)
+            {
+                printf("\n Number of intensity invalid ! Choose again.");
+            }*/
+
+            Image *img = readImage(image);
+            changeIntensityGray(img, intensity);
+
+            break;
+        }
+        case 4:
+        {
+            printf("\nChoose the image you want to split the channel color to gray: ");
+            unsigned char image = getchar();
+            printf("\nName the new image: ");
+            unsigned char newImage = getchar();
+
+            printf("\n Which channel you want to change to gray? Red, Green or Blue?");
+            unsigned char channel = getchar();
+
+            toGreySplitted(image, channel);
+            writeGrey(newImage,channel);
+
+            break;
+        }
+        case 5:
+        {
+            printf("\nChoose the image you want to filter: ");
+            unsigned char image = getchar();
+            printf("\nName the new image: ");
+            unsigned char newImage = getchar();
+
+            break;
+        }
+        case 6:
+        {
+            printf("\nChoose the image you want to watermark: ");
+            unsigned char image = getchar();
+            printf("\nName the new image: ");
+            unsigned char newImage = getchar();
+
+            break;
+        }
+        case 0:
+        {
+            printf("\nExiting...");
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
 }
 int main() {
     /** main function
