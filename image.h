@@ -1,6 +1,6 @@
 /** @file image.h
  * @brief Function prototypes for the image.c file
- * This contains the prototypes for the image.c file
+ * <p> This contains the prototypes for the image.c file
  * and the structures we will need.
  * @author Catarina Borges, 73865
  * @author Francisco Aires, 76490
@@ -40,7 +40,7 @@ typedef struct {
     /** Data Structure of an Image
      * @param w - image width
      * @param h - image height
-     * @param dataRGB - bi-dimensional type RGPPixel
+     * @param dataRGB - bi-dimensional type RGBPixel
      * @param dataGray - bi-dimensional type GrayPixel
      * @param dataBin - bi-dimensional type BinPixel*/
     int w, h;

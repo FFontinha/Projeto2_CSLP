@@ -1,5 +1,5 @@
 /** @file image.c
- * @brief
+ * @brief Contains the main() and all the other functions.
  *
  * @author Catarina Borges, 73865
  * @author Francisco Aires, 76490
@@ -10,7 +10,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "image.h"
-
 
 Image *readImage(char *file){
         /** Reads the image file, allocates memory for pixel data
@@ -96,7 +95,7 @@ Image *readImage(char *file){
 
 void changeIntensity(Image *img, int intensity)
 {
-    /** changeIntensity changes the intensity of RGB images
+    /** Changes the intensity of RGB images
      * @param Image *img which is the image file
      * @param int intensity is the intensity we want to change it to
      */
@@ -152,7 +151,7 @@ void changeIntensityGray(Image *img, int intensity)
 
 void toGrey(Image *img)
 {
-    /** toGrey changes the an image to Gray
+    /** toGrey changes the image to Gray
     * @param Image *img which is the image file we want to change to gray
     */
     int i,j;
@@ -222,6 +221,12 @@ void toBin(Image *img)
 
 void toGreySpitted(Image *img, char *color)
 {
+    /** toGreySpitted splits a color image into three grayscale images for each channel
+     * red, green and blue
+     * @param Image *img
+     * @param char *color - defines the channel color
+     *
+     */
     int i,j;
     img->dataGray = (GrayPixel**)malloc(img->h * sizeof(GrayPixel*));
     for(int i = 0; i <img->w; i++){
@@ -243,6 +248,10 @@ void toGreySpitted(Image *img, char *color)
 
 void writeGrey(const char *filename, Image *img)
 {
+    /** writeGrey writes/saves the new gray image
+     * @param const char *filename
+     * @param Image *img
+     */
     FILE *fp;
     //open file for output
     fp = fopen(filename, "wb");
@@ -270,6 +279,10 @@ void writeGrey(const char *filename, Image *img)
 
 void writePPM(const char *filename, Image *img)
 {
+    /** writePPM writes/saves the new RGB image
+     * @param const char *filename
+     * @param Image *img
+     */
     FILE *fp;
     //open file for output
     fp = fopen(filename, "wb");
@@ -297,6 +310,10 @@ void writePPM(const char *filename, Image *img)
 
 void writeBin(const char *filename, Image *img)
 {
+    /** writeBin writes/saves the new binary image
+     * @param const char *filename
+     * @param Image *img
+     */
     FILE *fp;
     //open file for output
     fp = fopen(filename, "wb");
@@ -321,6 +338,10 @@ void writeBin(const char *filename, Image *img)
 
 
 int main() {
+    /** main function
+     * @param none
+     * @return nothing
+     */
 
     Image *img = readImage("lena.ppm");
     toGrey(img);
