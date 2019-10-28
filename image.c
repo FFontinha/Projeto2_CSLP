@@ -212,9 +212,7 @@ void toBin(Image *img)
                 output = 0;
 
             };
-            //printf("\n");
         }
-        printf("\n");
     }
 }
 
@@ -300,6 +298,23 @@ void addFilter(Image *img)
             }
         }
     }
+}
+
+void waterMark(Image *img, const char* watermark){
+    Image *img2 = readImage(watermark);
+    int i,j;
+    int x = 300;
+    int y = 300;
+    for(i=x;i < img2->h+x;i++) {
+        for (j=y; j < img2->w+y; j++) {
+            if(i < img->h && j < img->w) {
+                img->dataRGB[i][j].r = img->dataRGB[i][j].r * img2->dataRGB[i - x][j - y].r / 255;
+                img->dataRGB[i][j].g = img->dataRGB[i][j].g * img2->dataRGB[i - x][j - y].g / 255;
+                img->dataRGB[i][j].b = img->dataRGB[i][j].b * img2->dataRGB[i - x][j - y].b / 255;
+            }
+        }
+    }
+
 }
 
 void writeGrey(const char *filename, Image *img)
@@ -532,6 +547,8 @@ int main() {
     //writePPM("intensity.ppm",img);
     addFilter(img);
     writeGrey("filteredLena.ppm",img);
+    waterMark(img,"house.ppm");
+    writePPM("watermarkedLena.ppm", img);
 
 
     Image *img2 = readImage("grayLena.ppm");
