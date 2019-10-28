@@ -221,7 +221,7 @@ void toBin(Image *img)
 
 void toGreySplitted(Image *img, char *color)
 {
-    /** toGreySplitted splits a color image into three grayscale images for each channel
+    /** toGreySpitted splits a color image into three grayscale images for each channel
      * red, green and blue
      * @param Image *img
      * @param char *color - defines the channel color
@@ -241,6 +241,62 @@ void toGreySplitted(Image *img, char *color)
                 img->dataGray[i][j].gray = (img->dataRGB[i][j].g);
             } else if (color == "blue") {
                 img->dataGray[i][j].gray = (img->dataRGB[i][j].b);
+            }
+        }
+    }
+}
+
+void addFilter(Image *img)
+{
+    /** Changes the intensity of RGB images
+     * @param Image *img which is the image file
+     * @param int intensity is the intensity we want to change it to
+     */
+    int i,j;
+    if(img){
+        /*
+        for(i=1;i < img->h - 1;i++){
+            for(j=1;j < img->w - 1 ;j++) {
+                img->dataRGB[i][j].r = (
+                        img->dataRGB[i-1][j-1].r + img->dataRGB[i-1][j].r + img->dataRGB[i-1][j+1].r +
+                        img->dataRGB[i][j-1].r + img->dataRGB[i][j].r + img->dataRGB[i][j+1].r +
+                        img->dataRGB[i+1][j-1].r + img->dataRGB[i+1][j].r + img->dataRGB[i+1][j+1].r
+                        ) / 9;
+                img->dataRGB[i][j].g = (
+                        img->dataRGB[i-1][j-1].g + img->dataRGB[i-1][j].g + img->dataRGB[i-1][j+1].g +
+                        img->dataRGB[i][j-1].g + img->dataRGB[i][j].g + img->dataRGB[i][j+1].g +
+                        img->dataRGB[i+1][j-1].g + img->dataRGB[i+1][j].g + img->dataRGB[i+1][j+1].g
+                        ) / 9;
+                img->dataRGB[i][j].b = (
+                        img->dataRGB[i-1][j-1].b + img->dataRGB[i-1][j].b + img->dataRGB[i-1][j+1].b +
+                        img->dataRGB[i][j-1].b + img->dataRGB[i][j].b + img->dataRGB[i][j+1].b +
+                        img->dataRGB[i+1][j-1].b + img->dataRGB[i+1][j].b + img->dataRGB[i+1][j+1].b
+                        ) / 9;
+            }
+        }
+         */
+        int difference, threshold;
+        threshold = 25;
+        for(i=1; i < img->h - 1;i++) {
+            for (j = 1; j < img->w - 1; j++) {
+                for(int x = i-1; x < i+1;x++) {
+                    for (int y = j-1; y <= j+1; y++) {
+                        img->dataGray[i][j].gray = 0;
+                        difference = abs(img->dataRGB[i][j].r - img->dataRGB[x][y].r);
+                        if (difference > threshold) {
+                            img->dataGray[i][j].gray = difference;
+                        }
+                        if (abs(img->dataRGB[i][j].g - img->dataRGB[x][y].g) > difference && abs(img->dataRGB[i][j].g - img->dataRGB[x][y].g) > threshold){
+                            difference = img->dataRGB[i][j].g - img->dataRGB[x][y].g;
+                            img->dataGray[i][j].gray = difference;
+                        }
+                        if (abs(img->dataRGB[i][j].b - img->dataRGB[x][y].b) > difference && abs(img->dataRGB[i][j].b - img->dataRGB[x][y].b) > threshold) {
+                            difference = img->dataRGB[i][j].b - img->dataRGB[x][y].b;
+                            img->dataGray[i][j].gray = difference;
+                        }
+                    }
+                }
+
             }
         }
     }
@@ -346,12 +402,12 @@ void printMenu(void)
     printf("-------------------------------------\n");
     printf("|                MENU                |\n");
     printf("-------------------------------------\n");
-    printf("| 1 : Change Image to Gray\t\t\t|\n");
-    printf("| 2 : Change Image to Binary\t\t\t|\n");
-    printf("| 3 : Change Image intensity\t\t\t|\n");
-    printf("| 4 : Split the color image into the grayscale image for channel you choose\t|\n");
-    printf("| 5 : Filter your Image, with an average filter\t\t|\n");
-    printf("| 6 : Watermark the Image\t\t\t|\n");
+    printf("| 1 : Change Image to Gray\t|\n");
+    printf("| 2 : Change Image to RGB\t|\n");
+    printf("| 3 : Change Image to Binary\t|\n");
+    printf("| 4 : Change Image intensity\t|\n");
+    printf("| 5 : Filter your Image, with an average filter|\n");
+    printf("| 6 : Watermark the Image|\n");
     printf("| 0 : Exit\t\t\t|\n");
     printf("-------------------------------------\n\n\r");
 }
@@ -366,94 +422,7 @@ void Menu(void)
 
      switch (number)
      {
-         case 1:
-         {
-             printf("\nChoose the image you want to change: ");
-             unsigned char image = getchar();
-             printf("\nName the new gray image: ");
-             unsigned char newImage = getchar();
-
-             Image *img = readImage(image);
-             toGrey(img);
-             writeGrey(newImage,img);
-
-             break;
-         }
-         case 2:
-         {
-             printf("\nChoose the image you want to change: ");
-             unsigned char image = getchar();
-             printf("\nName the new binary image: ");
-             unsigned char newImage = getchar();
-
-             Image *img = readImage(image);
-             toBin(img);
-             writeBin(newImage,img);
-
-             break;
-         }
-         case 3:
-         {
-             printf("\nChoose the image you want to change the intensity of: ");
-             unsigned char image = getchar();
-             printf("\nName the new image: ");
-             unsigned char newImage = getchar();
-
-             printf("\n Choose the intensity from -255 to 255: ");
-             int intensity = getchar();
-
-             /*if(intensity < -255 || intensity > 255)
-             {
-                 printf("\n Number of intensity invalid ! Choose again.");
-             }*/
-
-             Image *img = readImage(image);
-             changeIntensityGray(img, intensity);
-
-             break;
-         }
-         case 4:
-         {
-             printf("\nChoose the image you want to split the channel color to gray: ");
-             unsigned char image = getchar();
-             printf("\nName the new image: ");
-             unsigned char newImage = getchar();
-
-             printf("\n Which channel you want to change to gray? Red, Green or Blue?");
-             unsigned char channel = getchar();
-
-             toGreySplitted(image, channel);
-             writeGrey(newImage,channel);
-
-             break;
-         }
-         case 5:
-         {
-             printf("\nChoose the image you want to filter: ");
-             unsigned char image = getchar();
-             printf("\nName the new image: ");
-             unsigned char newImage = getchar();
-
-             break;
-         }
-         case 6:
-         {
-             printf("\nChoose the image you want to watermark: ");
-             unsigned char image = getchar();
-             printf("\nName the new image: ");
-             unsigned char newImage = getchar();
-
-             break;
-         }
-         case 0:
-         {
-             printf("\nExiting...");
-             break;
-         }
-         default:
-         {
-            break;
-         }
+         case 1:;
      }
 }
 int main() {
@@ -472,8 +441,11 @@ int main() {
     writeGrey("greyblue.ppm",img);
 
     writeGrey("grayLena.ppm",img);
-    changeIntensity(img, -40);
-    writePPM("intensity.ppm",img);
+    //changeIntensity(img, -40);
+    //writePPM("intensity.ppm",img);
+    addFilter(img);
+    writeGrey("filteredLena.ppm",img);
+
 
     Image *img2 = readImage("grayLena.ppm");
     changeIntensityGray(img2, 40);
@@ -481,11 +453,14 @@ int main() {
     toBin(img2);
     writeBin("binLena.pbm",img2);
 
+
+    /*
     printMenu();
 
     while(1)
     {
         Menu();
     }
+     */
     return 0;
 }
