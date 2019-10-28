@@ -43,6 +43,7 @@ typedef struct {
      * @param dataRGB - bi-dimensional type RGBPixel
      * @param dataGray - bi-dimensional type GrayPixel
      * @param dataBin - bi-dimensional type BinPixel*/
+    int type;
     int w, h;
     RGBPixel **dataRGB;
     GrayPixel **dataGray;
@@ -55,14 +56,20 @@ typedef struct {
 Image *readImage(char *file);
 
 void changeIntensity(Image *img, int intensity);
+void changeIntensityGray(Image *img, int intensity);
+void addFilter(Image *img , char *filter);
+void waterMark(Image *img, const char* watermark);
 
 void toGrey(Image *img);
 void toBin(Image *img);
-void toGreySpitted(Image *img, char *color);
+void toGreySplitted(Image *img, char *color);
 
 void writeGrey(const char *filename, Image *img);
 void writePPM(const char *filename, Image *img);
 void writeBin(const char *filename, Image *img);
+
+void printMenu(void);
+void Menu(void);
 
 #endif //IMAGES_IMAGE_H
 

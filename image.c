@@ -20,7 +20,6 @@ Image *readImage(char *file){
     Image *img;
     char buff[16];
     int rgb_comp_color;
-
     //Open file
     fp = fopen(file, "rb");
 
@@ -30,14 +29,9 @@ Image *readImage(char *file){
     }
     //read image format
     if (!fgets(buff, sizeof(buff) ,fp)) {
-        perror("lena.ppm");
+        perror(file);
         exit(1);
     }
-    /*check the image format
-    if (buff[0] != 'P' || buff[1] != '6') {
-        fprintf(stderr, "Invalid image format (must be 'P6')\n");
-        exit(1);
-    }*/
 
     //alloc memory from image
     img = (Image *)malloc(sizeof(Image));
@@ -72,6 +66,7 @@ Image *readImage(char *file){
 
     //memory allocation for pixel data
     if (buff[1] == '6'){
+        img->type = 6;
         img->dataRGB = (RGBPixel**)malloc(img->h * sizeof(RGBPixel*));
         for(int i = 0; i <img->h; i++){
             img->dataRGB[i] = (RGBPixel*)malloc(img->w * sizeof(RGBPixel));
@@ -81,6 +76,7 @@ Image *readImage(char *file){
         }
     }
     else if(buff[1] == '5'){
+        img->type = 5;
         img->dataGray = (GrayPixel**)malloc(img->h * sizeof(GrayPixel*));
         for(int i = 0; i <img->h; i++){
             img->dataGray[i] = (GrayPixel*)malloc(img->w * sizeof(GrayPixel));
@@ -244,7 +240,7 @@ void toGreySplitted(Image *img, char *color)
     }
 }
 
-void addFilter(Image *img)
+void addFilter(Image *img , char *filter)
 {
     /** Changes the intensity of RGB images
      * @param Image *img which is the image file
@@ -424,7 +420,7 @@ void printMenu(void)
     printf("| 5 : Filter your Image, with an average filter\t\t|\n");
     printf("| 6 : Watermark the Image\t\t\t|\n");
     printf("| 0 : Exit\t\t\t|\n");
-    printf("-------------------------------------\n\n\r");
+    printf("-------------------------------------\n\r");
 }
 
 void Menu(void)
@@ -434,137 +430,97 @@ void Menu(void)
      *
      */
     unsigned int number = getchar();
+    unsigned char image[20], newImage[20], arg[20];
 
     switch (number)
     {
-        case 1:
+        case '1':
         {
-            printf("\nChoose the image you want to change: ");
-            unsigned char image = getchar();
-            printf("\nName the new gray image: ");
-            unsigned char newImage = getchar();
-
+            printf("\n(filenameRGB) (new_filename):");
+            scanf("%s %s", image, newImage);
             Image *img = readImage(image);
             toGrey(img);
             writeGrey(newImage,img);
-
+            printMenu();
             break;
         }
-        case 2:
+        case '2':
         {
-            printf("\nChoose the image you want to change: ");
-            unsigned char image = getchar();
-            printf("\nName the new binary image: ");
-            unsigned char newImage = getchar();
+            printf("\n(filenameGray) (new_filename):");
+            scanf("%s %s", image, newImage);
 
             Image *img = readImage(image);
             toBin(img);
             writeBin(newImage,img);
-
+            printMenu();
             break;
         }
-        case 3:
+        case '3':
         {
-            printf("\nChoose the image you want to change the intensity of: ");
-            unsigned char image = getchar();
-            printf("\nName the new image: ");
-            unsigned char newImage = getchar();
+            int intensity;
 
-            printf("\n Choose the intensity from -255 to 255: ");
-            int intensity = getchar();
-
-            /*if(intensity < -255 || intensity > 255)
+            printf("\n(filename) (new_filename) (intensity[-255,255]):");
+            scanf("%s %s %d", image, newImage, &intensity);
+            if(intensity < -255 || intensity > 255)
             {
-                printf("\n Number of intensity invalid ! Choose again.");
-            }*/
-
-            Image *img = readImage(image);
-            changeIntensityGray(img, intensity);
-
-            break;
+                printf("\n Number of intensity invalid!");
+                printMenu();
+                break;
+            }
+            else{
+                Image *img = readImage(image);
+                //printf("%s %d",image, img->type);
+                if (img->type == 6){
+                    changeIntensity(img, intensity);
+                    writePPM(newImage,img);
+                }
+                else if (img->type == 5){
+                    changeIntensityGray(img,intensity);
+                    writeGrey(newImage,img);
+                }
+                printMenu();
+                break;
+            }
         }
-        case 4:
+        case '4':
         {
-            printf("\nChoose the image you want to split the channel color to gray: ");
-            unsigned char image = getchar();
-            printf("\nName the new image: ");
-            unsigned char newImage = getchar();
-
-            printf("\n Which channel you want to change to gray? Red, Green or Blue?");
-            unsigned char channel = getchar();
-
-            toGreySplitted(image, channel);
-            writeGrey(newImage,channel);
-
+            printf("\n(filename) (new_filename) (color_channel[red,green,blue]):");
+            scanf("%s %s %s", image, newImage, arg);
+            printf("%s", arg);
+            Image *img = readImage(image);
+            toGreySplitted(img, arg);
+            writeGrey(newImage,img);
+            printMenu();
             break;
         }
-        case 5:
+        case '5':
         {
             printf("\nChoose the image you want to filter: ");
             unsigned char image = getchar();
             printf("\nName the new image: ");
             unsigned char newImage = getchar();
-
+            printMenu();
             break;
         }
-        case 6:
+        case '6':
         {
             printf("\nChoose the image you want to watermark: ");
             unsigned char image = getchar();
             printf("\nName the new image: ");
             unsigned char newImage = getchar();
-
+            printMenu();
             break;
         }
-        case 0:
+        case '0':
         {
             printf("\nExiting...");
-            break;
+            exit(0);
         }
         default:
         {
             break;
         }
+
+
     }
-}
-int main() {
-    /** main function
-     * @param none
-     * @return nothing
-     */
-
-    Image *img = readImage("lena.ppm");
-    toGrey(img);
-    toGreySplitted(img, "red");
-    writeGrey("greyred.ppm",img);
-    toGreySplitted(img, "green");
-    writeGrey("greygreen.ppm",img);
-    toGreySplitted(img, "blue");
-    writeGrey("greyblue.ppm",img);
-
-    writeGrey("grayLena.ppm",img);
-    //changeIntensity(img, -40);
-    //writePPM("intensity.ppm",img);
-    addFilter(img);
-    writeGrey("filteredLena.ppm",img);
-    waterMark(img,"house.ppm");
-    writePPM("watermarkedLena.ppm", img);
-
-
-    Image *img2 = readImage("grayLena.ppm");
-    changeIntensityGray(img2, 40);
-    writeGrey("grayIntensity.ppm",img2);
-    toBin(img2);
-    writeBin("binLena.pbm",img2);
-
-
-    /*
-    printMenu();
-
-    while(1)
-    {
-        Menu();
-    }
-     */
-    return 0;
 }
