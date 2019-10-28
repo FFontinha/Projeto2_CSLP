@@ -336,7 +336,39 @@ void writeBin(const char *filename, Image *img)
     fclose(fp);
 }
 
+void printMenu(void)
+{
+    /** Prints the Menu()
+     * @param none
+     *
+     */
+    printf("\n\n");
+    printf("-------------------------------------\n");
+    printf("|                MENU                |\n");
+    printf("-------------------------------------\n");
+    printf("| 1 : Change Image to Gray\t|\n");
+    printf("| 2 : Change Image to RGB\t|\n");
+    printf("| 3 : Change Image to Binary\t|\n");
+    printf("| 4 : Change Image intensity\t|\n");
+    printf("| 5 : Filter your Image, with an average filter|\n");
+    printf("| 6 : Watermark the Image|\n");
+    printf("| 0 : Exit\t\t\t|\n");
+    printf("-------------------------------------\n\n\r");
+}
 
+void Menu(void)
+{
+    /** Menu
+     * @param none
+     *
+     */
+     unsigned int number = getchar();
+
+     switch (number)
+     {
+         case 1:
+     }
+}
 int main() {
     /** main function
      * @param none
@@ -362,6 +394,11 @@ int main() {
     toBin(img2);
     writeBin("binLena.pbm",img2);
 
+    printMenu();
 
+    while(1)
+    {
+        Menu();
+    }
     return 0;
 }
