@@ -246,65 +246,84 @@ void toGreySplitted(Image *img, char *color)
 
 void addFilter(Image *img , char *filter)
 {
-    /** Changes the intensity of RGB images
+    /** Adds an average filter or edge filter to an RGB image
      * @param Image *img which is the image file
-     * @param int intensity is the intensity we want to change it to
+     * @param char filter is the filter's type that we want to add
      */
     int i,j;
     if(img){
-        /*
-        for(i=1;i < img->h - 1;i++){
-            for(j=1;j < img->w - 1 ;j++) {
-                img->dataRGB[i][j].r = (
-                        img->dataRGB[i-1][j-1].r + img->dataRGB[i-1][j].r + img->dataRGB[i-1][j+1].r +
-                        img->dataRGB[i][j-1].r + img->dataRGB[i][j].r + img->dataRGB[i][j+1].r +
-                        img->dataRGB[i+1][j-1].r + img->dataRGB[i+1][j].r + img->dataRGB[i+1][j+1].r
-                        ) / 9;
-                img->dataRGB[i][j].g = (
-                        img->dataRGB[i-1][j-1].g + img->dataRGB[i-1][j].g + img->dataRGB[i-1][j+1].g +
-                        img->dataRGB[i][j-1].g + img->dataRGB[i][j].g + img->dataRGB[i][j+1].g +
-                        img->dataRGB[i+1][j-1].g + img->dataRGB[i+1][j].g + img->dataRGB[i+1][j+1].g
-                        ) / 9;
-                img->dataRGB[i][j].b = (
-                        img->dataRGB[i-1][j-1].b + img->dataRGB[i-1][j].b + img->dataRGB[i-1][j+1].b +
-                        img->dataRGB[i][j-1].b + img->dataRGB[i][j].b + img->dataRGB[i][j+1].b +
-                        img->dataRGB[i+1][j-1].b + img->dataRGB[i+1][j].b + img->dataRGB[i+1][j+1].b
-                        ) / 9;
+        if (strcmp(filter, "average")==0){
+            for(i=1;i < img->h - 1;i++){
+                for(j=1;j < img->w - 1 ;j++) {
+                    img->dataRGB[i][j].r = (
+                            img->dataRGB[i-1][j-1].r + img->dataRGB[i-1][j].r + img->dataRGB[i-1][j+1].r +
+                            img->dataRGB[i][j-1].r + img->dataRGB[i][j].r + img->dataRGB[i][j+1].r +
+                            img->dataRGB[i+1][j-1].r + img->dataRGB[i+1][j].r + img->dataRGB[i+1][j+1].r
+                            ) / 9;
+                    img->dataRGB[i][j].g = (
+                            img->dataRGB[i-1][j-1].g + img->dataRGB[i-1][j].g + img->dataRGB[i-1][j+1].g +
+                            img->dataRGB[i][j-1].g + img->dataRGB[i][j].g + img->dataRGB[i][j+1].g +
+                            img->dataRGB[i+1][j-1].g + img->dataRGB[i+1][j].g + img->dataRGB[i+1][j+1].g
+                            ) / 9;
+                    img->dataRGB[i][j].b = (
+                            img->dataRGB[i-1][j-1].b + img->dataRGB[i-1][j].b + img->dataRGB[i-1][j+1].b +
+                            img->dataRGB[i][j-1].b + img->dataRGB[i][j].b + img->dataRGB[i][j+1].b +
+                            img->dataRGB[i+1][j-1].b + img->dataRGB[i+1][j].b + img->dataRGB[i+1][j+1].b
+                            ) / 9;
+                }
             }
         }
-         */
-        int difference, threshold;
-        threshold = 25;
-        for(i=1; i < img->h - 1;i++) {
-            for (j = 1; j < img->w - 1; j++) {
-                for(int x = i-1; x < i+1;x++) {
-                    for (int y = j-1; y <= j+1; y++) {
-                        img->dataGray[i][j].gray = 0;
-                        difference = abs(img->dataRGB[i][j].r - img->dataRGB[x][y].r);
-                        if (difference > threshold) {
-                            img->dataGray[i][j].gray = difference;
-                        }
-                        if (abs(img->dataRGB[i][j].g - img->dataRGB[x][y].g) > difference && abs(img->dataRGB[i][j].g - img->dataRGB[x][y].g) > threshold){
-                            difference = img->dataRGB[i][j].g - img->dataRGB[x][y].g;
-                            img->dataGray[i][j].gray = difference;
-                        }
-                        if (abs(img->dataRGB[i][j].b - img->dataRGB[x][y].b) > difference && abs(img->dataRGB[i][j].b - img->dataRGB[x][y].b) > threshold) {
-                            difference = img->dataRGB[i][j].b - img->dataRGB[x][y].b;
-                            img->dataGray[i][j].gray = difference;
+
+
+        if (strcmp(filter, "edge")==0) {
+
+            img->dataGray = (GrayPixel**)malloc(img->h * sizeof(GrayPixel*));
+            for(int i = 0; i <img->h; i++){
+                img->dataGray[i] = (GrayPixel*)malloc(img->w * sizeof(GrayPixel));
+            }
+
+            int difference, threshold;
+            threshold = 25;
+
+            for (i = 1; i < img->h - 1; i++) {
+                for (j = 1; j < img->w - 1; j++) {
+                    for (int x = i - 1; x < i + 1; x++) {
+                        for (int y = j - 1; y <= j + 1; y++) {
+                            img->dataGray[i][j].gray = 0;
+                            difference = abs(img->dataRGB[i][j].r - img->dataRGB[x][y].r);
+                            if (difference > threshold) {
+                                img->dataGray[i][j].gray = difference;
+                            }
+                            if (abs(img->dataRGB[i][j].g - img->dataRGB[x][y].g) > difference &&
+                                abs(img->dataRGB[i][j].g - img->dataRGB[x][y].g) > threshold) {
+                                difference = img->dataRGB[i][j].g - img->dataRGB[x][y].g;
+                                img->dataGray[i][j].gray = difference;
+                            }
+                            if (abs(img->dataRGB[i][j].b - img->dataRGB[x][y].b) > difference &&
+                                abs(img->dataRGB[i][j].b - img->dataRGB[x][y].b) > threshold) {
+                                difference = img->dataRGB[i][j].b - img->dataRGB[x][y].b;
+                                img->dataGray[i][j].gray = difference;
+                            }
                         }
                     }
                 }
-
             }
+
         }
+
     }
 }
 
-void waterMark(Image *img, char* watermark){
+void waterMark(Image *img, char* watermark,int x, int y)
+{
+    /** Adds a watermark to an RGB image
+     * @param Image *img which is the image file
+     * @param char watermark is the watermark image we want to add
+     * @param int x is the starting x coord of the watermark image
+     * @param int x,y is the starting y coord of the watermark image
+     */
     Image *img2 = readImage(watermark);
     int i,j;
-    int x = 300;
-    int y = 300;
     for(i=x;i < img2->h+x;i++) {
         for (j=y; j < img2->w+y; j++) {
             if(i < img->h && j < img->w) {
@@ -410,7 +429,6 @@ void writeBin(const char *filename, Image *img)
 void printMenu(void)
 {
     /** Prints the Menu()
-     * @param none
      *
      */
     printf("\n\n");
@@ -425,16 +443,16 @@ void printMenu(void)
     printf("| 6 : Watermark the Image\t\t\t\t\t\t\t\t\t\t\t\t\t|\n");
     printf("| 0 : Exit\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t|\n");
     printf("----------------------------------------------------------------------------\n\r");
+    printf("Choose option: ");
 }
 
 void Menu(void)
 {
     /** Menu - implements the menu
-     * @param none
      *
      */
     unsigned int number = getchar();
-    unsigned char image[20], newImage[20], arg[20], filter[20], watermark[20];
+    unsigned char image[20], newImage[20], arg[20];
 
     switch (number)
     {
@@ -445,7 +463,7 @@ void Menu(void)
             Image *img = readImage(image);
             toGrey(img);
             writeGrey(newImage,img);
-            printMenu();
+            printf("%s created!", newImage);
             break;
         }
         case '2':
@@ -456,7 +474,7 @@ void Menu(void)
             Image *img = readImage(image);
             toBin(img);
             writeBin(newImage,img);
-            printMenu();
+            printf("%s created!", newImage);
             break;
         }
         case '3':
@@ -468,7 +486,6 @@ void Menu(void)
             if(intensity < -255 || intensity > 255)
             {
                 printf("\n Number of intensity invalid!");
-                printMenu();
                 break;
             }
             else{
@@ -482,7 +499,7 @@ void Menu(void)
                     changeIntensityGray(img,intensity);
                     writeGrey(newImage,img);
                 }
-                printMenu();
+                printf("%s created!", newImage);
                 break;
             }
         }
@@ -494,32 +511,34 @@ void Menu(void)
             toGreySplitted(img, arg);
 
             writeGrey(newImage,img);
-
-            printMenu();
+            printf("%s created!", newImage);
             break;
         }
         case '5':
         {
             printf("\n(filename) (new_filename) (filter [average or edge]):");
-            scanf("%s %s %s", image, newImage, filter);
+            scanf("%s %s %s", image, newImage, arg);
             Image *img = readImage(image);
+            addFilter(img , arg);
 
-            addFilter(img , filter);
-            writePPM(newImage, img);
-            printMenu();
-
+            if (strcmp(arg, "average")==0) {
+                writePPM(newImage, img);
+            }
+            else if (strcmp(arg, "edge")==0) {
+                writeGrey(newImage, img);
+            }
+            printf("%s created!", newImage);
             break;
         }
         case '6':
         {
-            printf("\n(filename) (new_filename) (watermark image):");
-            scanf("%s %s %s", image, newImage, watermark);
+            int x,y;
+            printf("\n(filename) (new_filename) (watermark_filename) (x) (y):");
+            scanf("%s %s %s %d %d", image, newImage, arg, &x, &y);
             Image *img = readImage(image);
-
-            waterMark(img, watermark);
+            waterMark(img, arg, x, y);
             writePPM(newImage, img);
-
-            printMenu();
+            printf("%s created!", newImage);;
             break;
         }
         case '0':

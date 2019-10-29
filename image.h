@@ -32,7 +32,7 @@ typedef  struct {
 
 typedef struct {
     /**Data Structure of Binary Pixel
-     * @param bin - Binary pixel takes a binary value 1 or 0*/
+     * @param bin - Binary pixel takes 8 binary values 1 or 0*/
     unsigned char bin; // 8 bits (0 or 1)
 } BinPixel;
 
@@ -40,9 +40,10 @@ typedef struct {
     /** Data Structure of an Image
      * @param w - image width
      * @param h - image height
-     * @param dataRGB - bi-dimensional type RGBPixel
-     * @param dataGray - bi-dimensional type GrayPixel
-     * @param dataBin - bi-dimensional type BinPixel*/
+     * @param dataRGB - RGBPixel matrix
+     * @param dataGray - GrayPixel matrix
+     * @param dataBin - BinPixel matrix
+     * */
     int type;
     int w, h;
     RGBPixel **dataRGB;
@@ -58,7 +59,7 @@ Image *readImage(char *file);
 void changeIntensity(Image *img, int intensity);
 void changeIntensityGray(Image *img, int intensity);
 void addFilter(Image *img , char *filter);
-void waterMark(Image *img, char* watermark);
+void waterMark(Image *img, char* watermark, int x, int y);
 
 void toGrey(Image *img);
 void toBin(Image *img);
