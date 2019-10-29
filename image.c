@@ -235,7 +235,7 @@ void toGreySplitted(Image *img, char *color)
             if (strcmp(color, "red")==0)
             {
                 img->dataGray[i][j].gray = (img->dataRGB[i][j].r);
-            } else if (strcmp(color, "green")==0 {
+            } else if (strcmp(color, "green")==0) {
                 img->dataGray[i][j].gray = (img->dataRGB[i][j].g);
             } else if (strcmp(color, "blue")==0) {
                 img->dataGray[i][j].gray = (img->dataRGB[i][j].b);
@@ -529,7 +529,6 @@ void Menu(void)
         }
         default:
         {
-            printf("ERROR. Please, try again.");
             printMenu();
             break;
         }
