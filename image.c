@@ -431,17 +431,17 @@ void printMenu(void)
      *
      */
     printf("\n\n");
-    printf("-----------------------------------------------------------------------------\n");
-    printf("|\t\t                MENU                \t\t\t\t\t\t\t\t|\n");
-    printf("-----------------------------------------------------------------------------\n");
-    printf("| 1 : Change Image to Gray\t\t\t\t\t\t\t\t\t\t\t\t\t|\n");
-    printf("| 2 : Change Image to Binary\t\t\t\t\t\t\t\t\t\t\t\t|\n");
-    printf("| 3 : Change Image intensity\t\t\t\t\t\t\t\t\t\t\t\t|\n");
-    printf("| 4 : Split the color image into the grayscale image for channel you choose |\n");
-    printf("| 5 : Filter your Image, with an average filter\t\t\t\t\t\t\t\t|\n");
-    printf("| 6 : Watermark the Image\t\t\t\t\t\t\t\t\t\t\t\t\t|\n");
-    printf("| 0 : Exit\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t|\n");
-    printf("----------------------------------------------------------------------------\n\r");
+    printf("-------------------------------------------------------------------------------\n");
+    printf("|\t\t                MENU                \t\t\t\t|\n");
+    printf("-------------------------------------------------------------------------------\n");
+    printf("| 1 : Change Image to Gray\t\t\t\t\t\t\t|\n");
+    printf("| 2 : Change Image to Binary\t\t\t\t\t\t\t|\n");
+    printf("| 3 : Change Image Intensity\t\t\t\t\t\t\t|\n");
+    printf("| 4 : Split the color image into the grayscale image with the channel you choose|\n");
+    printf("| 5 : Filter your Image, with an average filter or an edge filter \t\t|\n");
+    printf("| 6 : Watermark an image with another image \t\t\t\t\t|\n");
+    printf("| 0 : Exit\t\t\t\t\t\t\t\t\t|\n");
+    printf("------------------------------------------------------------------------------\n\r");
     printf("Choose option: ");
 }
 
