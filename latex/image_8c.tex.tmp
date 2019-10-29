@@ -1,0 +1,209 @@
+\hypertarget{image_8c}{}\section{image.\+c File Reference}
+\label{image_8c}\index{image.\+c@{image.\+c}}
+
+
+Containes all functions.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}image.\+h\char`\"{}}\newline
+Include dependency graph for image.\+c\+:
+% FIG 0
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{struct_image}{Image} $\ast$ \hyperlink{image_8c_a581432ae056c43fe67bced417d80bd9f}{read\+Image} (char $\ast$file)
+\item 
+void \hyperlink{image_8c_a0e168bf1a204a6701bbf37971fef95a1}{change\+Intensity} (\hyperlink{struct_image}{Image} $\ast$img, int intensity)
+\item 
+void \hyperlink{image_8c_a864d088d764d73f76c6167cea7abfb05}{change\+Intensity\+Gray} (\hyperlink{struct_image}{Image} $\ast$img, int intensity)
+\item 
+void \hyperlink{image_8c_ad2598f7fb375e14737dc6d3e6c83529d}{to\+Grey} (\hyperlink{struct_image}{Image} $\ast$img)
+\item 
+void \hyperlink{image_8c_a562c05cc375f753428e6c690580765f8}{to\+Bin} (\hyperlink{struct_image}{Image} $\ast$img)
+\item 
+void \hyperlink{image_8c_a00c347fa50ebaa8123f52d25e1b5bbbf}{to\+Grey\+Splitted} (\hyperlink{struct_image}{Image} $\ast$img, char $\ast$color)
+\item 
+void \hyperlink{image_8c_a82ad6d213aac09b6c7fdcf03b3d21bfb}{add\+Filter} (\hyperlink{struct_image}{Image} $\ast$img, char $\ast$filter)
+\item 
+void \hyperlink{image_8c_aae8898fa76611556749144230c349648}{water\+Mark} (\hyperlink{struct_image}{Image} $\ast$img, char $\ast$watermark, int x, int y)
+\item 
+void \hyperlink{image_8c_a2465e896da6f8c2d22a4bce3092b1eb4}{write\+Grey} (const char $\ast$filename, \hyperlink{struct_image}{Image} $\ast$img)
+\item 
+void \hyperlink{image_8c_aeafc339a6024c6f375e8867fbf47575a}{write\+P\+PM} (const char $\ast$filename, \hyperlink{struct_image}{Image} $\ast$img)
+\item 
+void \hyperlink{image_8c_add60f85be53f0bd4b8886fefebff0a5a}{write\+Bin} (const char $\ast$filename, \hyperlink{struct_image}{Image} $\ast$img)
+\item 
+void \hyperlink{image_8c_ad0d0f0ce9c3289b4bd6ecfae02494b2f}{print\+Menu} (void)
+\item 
+void \hyperlink{image_8c_aeacc4d8e9ea2e47e21aafcb2de0df935}{Menu} (void)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Containes all functions. 
+
+\begin{DoxyAuthor}{Author}
+Catarina Borges, 73865 
+
+Francisco Aires, 76490 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{Bug}
+\item[\hyperlink{bug__bug000001}{Bug}]\end{DoxyRefDesc}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{image_8c_a82ad6d213aac09b6c7fdcf03b3d21bfb}\label{image_8c_a82ad6d213aac09b6c7fdcf03b3d21bfb}} 
+\index{image.\+c@{image.\+c}!add\+Filter@{add\+Filter}}
+\index{add\+Filter@{add\+Filter}!image.\+c@{image.\+c}}
+\subsubsection{\texorpdfstring{add\+Filter()}{addFilter()}}
+{\footnotesize\ttfamily void add\+Filter (\begin{DoxyParamCaption}\item[{\hyperlink{struct_image}{Image} $\ast$}]{img,  }\item[{char $\ast$}]{filter }\end{DoxyParamCaption})}
+
+Adds an average filter or edge filter to an R\+GB image 
+\begin{DoxyParams}{Parameters}
+{\em \hyperlink{struct_image}{Image}} & $\ast$img which is the image file \\
+\hline
+{\em char} & filter is the filter\textquotesingle{}s type that we want to add\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{image_8c_a0e168bf1a204a6701bbf37971fef95a1}\label{image_8c_a0e168bf1a204a6701bbf37971fef95a1}} 
+\index{image.\+c@{image.\+c}!change\+Intensity@{change\+Intensity}}
+\index{change\+Intensity@{change\+Intensity}!image.\+c@{image.\+c}}
+\subsubsection{\texorpdfstring{change\+Intensity()}{changeIntensity()}}
+{\footnotesize\ttfamily void change\+Intensity (\begin{DoxyParamCaption}\item[{\hyperlink{struct_image}{Image} $\ast$}]{img,  }\item[{int}]{intensity }\end{DoxyParamCaption})}
+
+Changes the intensity of R\+GB images 
+\begin{DoxyParams}{Parameters}
+{\em \hyperlink{struct_image}{Image}} & $\ast$img which is the image file \\
+\hline
+{\em int} & intensity is the intensity we want to change it to\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{image_8c_a864d088d764d73f76c6167cea7abfb05}\label{image_8c_a864d088d764d73f76c6167cea7abfb05}} 
+\index{image.\+c@{image.\+c}!change\+Intensity\+Gray@{change\+Intensity\+Gray}}
+\index{change\+Intensity\+Gray@{change\+Intensity\+Gray}!image.\+c@{image.\+c}}
+\subsubsection{\texorpdfstring{change\+Intensity\+Gray()}{changeIntensityGray()}}
+{\footnotesize\ttfamily void change\+Intensity\+Gray (\begin{DoxyParamCaption}\item[{\hyperlink{struct_image}{Image} $\ast$}]{img,  }\item[{int}]{intensity }\end{DoxyParamCaption})}
+
+change\+Intensity\+Gray changes the intensity of Gray images 
+\begin{DoxyParams}{Parameters}
+{\em \hyperlink{struct_image}{Image}} & $\ast$img which is the image file \\
+\hline
+{\em int} & intensity is the intensity we want to change it to\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{image_8c_aeacc4d8e9ea2e47e21aafcb2de0df935}\label{image_8c_aeacc4d8e9ea2e47e21aafcb2de0df935}} 
+\index{image.\+c@{image.\+c}!Menu@{Menu}}
+\index{Menu@{Menu}!image.\+c@{image.\+c}}
+\subsubsection{\texorpdfstring{Menu()}{Menu()}}
+{\footnotesize\ttfamily void Menu (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Menu -\/ implements the menu\mbox{\Hypertarget{image_8c_ad0d0f0ce9c3289b4bd6ecfae02494b2f}\label{image_8c_ad0d0f0ce9c3289b4bd6ecfae02494b2f}} 
+\index{image.\+c@{image.\+c}!print\+Menu@{print\+Menu}}
+\index{print\+Menu@{print\+Menu}!image.\+c@{image.\+c}}
+\subsubsection{\texorpdfstring{print\+Menu()}{printMenu()}}
+{\footnotesize\ttfamily void print\+Menu (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Prints the \hyperlink{image_8c_aeacc4d8e9ea2e47e21aafcb2de0df935}{Menu()}\mbox{\Hypertarget{image_8c_a581432ae056c43fe67bced417d80bd9f}\label{image_8c_a581432ae056c43fe67bced417d80bd9f}} 
+\index{image.\+c@{image.\+c}!read\+Image@{read\+Image}}
+\index{read\+Image@{read\+Image}!image.\+c@{image.\+c}}
+\subsubsection{\texorpdfstring{read\+Image()}{readImage()}}
+{\footnotesize\ttfamily \hyperlink{struct_image}{Image}$\ast$ read\+Image (\begin{DoxyParamCaption}\item[{char $\ast$}]{file }\end{DoxyParamCaption})}
+
+Reads the image file, allocates memory for pixel data for each type of image, P6, P5 and binary. 
+\begin{DoxyParams}{Parameters}
+{\em char} & $\ast$file\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{image_8c_a562c05cc375f753428e6c690580765f8}\label{image_8c_a562c05cc375f753428e6c690580765f8}} 
+\index{image.\+c@{image.\+c}!to\+Bin@{to\+Bin}}
+\index{to\+Bin@{to\+Bin}!image.\+c@{image.\+c}}
+\subsubsection{\texorpdfstring{to\+Bin()}{toBin()}}
+{\footnotesize\ttfamily void to\+Bin (\begin{DoxyParamCaption}\item[{\hyperlink{struct_image}{Image} $\ast$}]{img }\end{DoxyParamCaption})}
+
+to\+Bin changes an image to binary 
+\begin{DoxyParams}{Parameters}
+{\em \hyperlink{struct_image}{Image}} & $\ast$img which is the image file we want to change\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{image_8c_ad2598f7fb375e14737dc6d3e6c83529d}\label{image_8c_ad2598f7fb375e14737dc6d3e6c83529d}} 
+\index{image.\+c@{image.\+c}!to\+Grey@{to\+Grey}}
+\index{to\+Grey@{to\+Grey}!image.\+c@{image.\+c}}
+\subsubsection{\texorpdfstring{to\+Grey()}{toGrey()}}
+{\footnotesize\ttfamily void to\+Grey (\begin{DoxyParamCaption}\item[{\hyperlink{struct_image}{Image} $\ast$}]{img }\end{DoxyParamCaption})}
+
+to\+Grey changes the image to Gray 
+\begin{DoxyParams}{Parameters}
+{\em \hyperlink{struct_image}{Image}} & $\ast$img which is the image file we want to change to gray\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{image_8c_a00c347fa50ebaa8123f52d25e1b5bbbf}\label{image_8c_a00c347fa50ebaa8123f52d25e1b5bbbf}} 
+\index{image.\+c@{image.\+c}!to\+Grey\+Splitted@{to\+Grey\+Splitted}}
+\index{to\+Grey\+Splitted@{to\+Grey\+Splitted}!image.\+c@{image.\+c}}
+\subsubsection{\texorpdfstring{to\+Grey\+Splitted()}{toGreySplitted()}}
+{\footnotesize\ttfamily void to\+Grey\+Splitted (\begin{DoxyParamCaption}\item[{\hyperlink{struct_image}{Image} $\ast$}]{img,  }\item[{char $\ast$}]{color }\end{DoxyParamCaption})}
+
+to\+Grey\+Spitted splits a color image into three grayscale images for each channel red, green and blue 
+\begin{DoxyParams}{Parameters}
+{\em \hyperlink{struct_image}{Image}} & $\ast$img \\
+\hline
+{\em char} & $\ast$color -\/ defines the channel color\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{image_8c_aae8898fa76611556749144230c349648}\label{image_8c_aae8898fa76611556749144230c349648}} 
+\index{image.\+c@{image.\+c}!water\+Mark@{water\+Mark}}
+\index{water\+Mark@{water\+Mark}!image.\+c@{image.\+c}}
+\subsubsection{\texorpdfstring{water\+Mark()}{waterMark()}}
+{\footnotesize\ttfamily void water\+Mark (\begin{DoxyParamCaption}\item[{\hyperlink{struct_image}{Image} $\ast$}]{img,  }\item[{char $\ast$}]{watermark,  }\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption})}
+
+Adds a watermark to an R\+GB image 
+\begin{DoxyParams}{Parameters}
+{\em \hyperlink{struct_image}{Image}} & $\ast$img which is the image file \\
+\hline
+{\em char} & watermark is the watermark image we want to add \\
+\hline
+{\em int} & x,y is the starting y coord of the watermark image\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{image_8c_add60f85be53f0bd4b8886fefebff0a5a}\label{image_8c_add60f85be53f0bd4b8886fefebff0a5a}} 
+\index{image.\+c@{image.\+c}!write\+Bin@{write\+Bin}}
+\index{write\+Bin@{write\+Bin}!image.\+c@{image.\+c}}
+\subsubsection{\texorpdfstring{write\+Bin()}{writeBin()}}
+{\footnotesize\ttfamily void write\+Bin (\begin{DoxyParamCaption}\item[{const char $\ast$}]{filename,  }\item[{\hyperlink{struct_image}{Image} $\ast$}]{img }\end{DoxyParamCaption})}
+
+write\+Bin writes/saves the new binary image 
+\begin{DoxyParams}{Parameters}
+{\em const} & char $\ast$filename \\
+\hline
+{\em \hyperlink{struct_image}{Image}} & $\ast$img\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{image_8c_a2465e896da6f8c2d22a4bce3092b1eb4}\label{image_8c_a2465e896da6f8c2d22a4bce3092b1eb4}} 
+\index{image.\+c@{image.\+c}!write\+Grey@{write\+Grey}}
+\index{write\+Grey@{write\+Grey}!image.\+c@{image.\+c}}
+\subsubsection{\texorpdfstring{write\+Grey()}{writeGrey()}}
+{\footnotesize\ttfamily void write\+Grey (\begin{DoxyParamCaption}\item[{const char $\ast$}]{filename,  }\item[{\hyperlink{struct_image}{Image} $\ast$}]{img }\end{DoxyParamCaption})}
+
+write\+Grey writes/saves the new gray image 
+\begin{DoxyParams}{Parameters}
+{\em const} & char $\ast$filename \\
+\hline
+{\em \hyperlink{struct_image}{Image}} & $\ast$img\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{image_8c_aeafc339a6024c6f375e8867fbf47575a}\label{image_8c_aeafc339a6024c6f375e8867fbf47575a}} 
+\index{image.\+c@{image.\+c}!write\+P\+PM@{write\+P\+PM}}
+\index{write\+P\+PM@{write\+P\+PM}!image.\+c@{image.\+c}}
+\subsubsection{\texorpdfstring{write\+P\+P\+M()}{writePPM()}}
+{\footnotesize\ttfamily void write\+P\+PM (\begin{DoxyParamCaption}\item[{const char $\ast$}]{filename,  }\item[{\hyperlink{struct_image}{Image} $\ast$}]{img }\end{DoxyParamCaption})}
+
+write\+P\+PM writes/saves the new R\+GB image 
+\begin{DoxyParams}{Parameters}
+{\em const} & char $\ast$filename \\
+\hline
+{\em \hyperlink{struct_image}{Image}} & $\ast$img\\
+\hline
+\end{DoxyParams}

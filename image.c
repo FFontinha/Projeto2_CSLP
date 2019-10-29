@@ -319,7 +319,6 @@ void waterMark(Image *img, char* watermark,int x, int y)
     /** Adds a watermark to an RGB image
      * @param Image *img which is the image file
      * @param char watermark is the watermark image we want to add
-     * @param int x is the starting x coord of the watermark image
      * @param int x,y is the starting y coord of the watermark image
      */
     Image *img2 = readImage(watermark);
