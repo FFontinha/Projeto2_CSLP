@@ -1,5 +1,5 @@
 /** @file image.c
- * @brief Contains the main() and all the other functions.
+ * @brief Containes all functions.
  *
  * @author Catarina Borges, 73865
  * @author Francisco Aires, 76490
@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 #include "image.h"
 
 Image *readImage(char *file){
@@ -223,17 +224,20 @@ void toGreySplitted(Image *img, char *color)
      */
     int i,j;
     img->dataGray = (GrayPixel**)malloc(img->h * sizeof(GrayPixel*));
-    for(int i = 0; i <img->w; i++){
+    for(int i = 0; i <img->w; i++)
+    {
         img->dataGray[i] = (GrayPixel*)malloc(img->w * sizeof(GrayPixel));
     }
-
-    for(i=0;i<img->h;i++){
-        for(j=0;j<img->w;j++) {
-            if (color == "red") {
+    for(i=0;i<img->h;i++)
+    {
+        for(j=0;j<img->w;j++)
+        {
+            if (strcmp(color, "red")==0)
+            {
                 img->dataGray[i][j].gray = (img->dataRGB[i][j].r);
-            } else if (color == "green") {
+            } else if (strcmp(color, "green")==0 {
                 img->dataGray[i][j].gray = (img->dataRGB[i][j].g);
-            } else if (color == "blue") {
+            } else if (strcmp(color, "blue")==0) {
                 img->dataGray[i][j].gray = (img->dataRGB[i][j].b);
             }
         }
@@ -296,7 +300,7 @@ void addFilter(Image *img , char *filter)
     }
 }
 
-void waterMark(Image *img, const char* watermark){
+void waterMark(Image *img, char* watermark){
     Image *img2 = readImage(watermark);
     int i,j;
     int x = 300;
@@ -410,27 +414,27 @@ void printMenu(void)
      *
      */
     printf("\n\n");
-    printf("-------------------------------------\n");
-    printf("|                MENU                |\n");
-    printf("-------------------------------------\n");
-    printf("| 1 : Change Image to Gray\t\t\t|\n");
-    printf("| 2 : Change Image to Binary\t\t\t|\n");
-    printf("| 3 : Change Image intensity\t\t\t|\n");
-    printf("| 4 : Split the color image into the grayscale image for channel you choose\t|\n");
-    printf("| 5 : Filter your Image, with an average filter\t\t|\n");
-    printf("| 6 : Watermark the Image\t\t\t|\n");
-    printf("| 0 : Exit\t\t\t|\n");
-    printf("-------------------------------------\n\r");
+    printf("-----------------------------------------------------------------------------\n");
+    printf("|\t\t                MENU                \t\t\t\t\t\t\t\t|\n");
+    printf("-----------------------------------------------------------------------------\n");
+    printf("| 1 : Change Image to Gray\t\t\t\t\t\t\t\t\t\t\t\t\t|\n");
+    printf("| 2 : Change Image to Binary\t\t\t\t\t\t\t\t\t\t\t\t|\n");
+    printf("| 3 : Change Image intensity\t\t\t\t\t\t\t\t\t\t\t\t|\n");
+    printf("| 4 : Split the color image into the grayscale image for channel you choose |\n");
+    printf("| 5 : Filter your Image, with an average filter\t\t\t\t\t\t\t\t|\n");
+    printf("| 6 : Watermark the Image\t\t\t\t\t\t\t\t\t\t\t\t\t|\n");
+    printf("| 0 : Exit\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t|\n");
+    printf("----------------------------------------------------------------------------\n\r");
 }
 
 void Menu(void)
 {
-    /** Menu
+    /** Menu - implements the menu
      * @param none
      *
      */
     unsigned int number = getchar();
-    unsigned char image[20], newImage[20], arg[20];
+    unsigned char image[20], newImage[20], arg[20], filter[20], watermark[20];
 
     switch (number)
     {
@@ -482,32 +486,39 @@ void Menu(void)
                 break;
             }
         }
-        case '4':
+       case '4':
         {
             printf("\n(filename) (new_filename) (color_channel[red,green,blue]):");
             scanf("%s %s %s", image, newImage, arg);
-            printf("%s", arg);
             Image *img = readImage(image);
             toGreySplitted(img, arg);
+
             writeGrey(newImage,img);
+
             printMenu();
             break;
         }
         case '5':
         {
-            printf("\nChoose the image you want to filter: ");
-            unsigned char image = getchar();
-            printf("\nName the new image: ");
-            unsigned char newImage = getchar();
+            printf("\n(filename) (new_filename) (filter [average or edge]):");
+            scanf("%s %s %s", image, newImage, filter);
+            Image *img = readImage(image);
+
+            addFilter(img , filter);
+            writePPM(newImage, img);
             printMenu();
+
             break;
         }
         case '6':
         {
-            printf("\nChoose the image you want to watermark: ");
-            unsigned char image = getchar();
-            printf("\nName the new image: ");
-            unsigned char newImage = getchar();
+            printf("\n(filename) (new_filename) (watermark image):");
+            scanf("%s %s %s", image, newImage, watermark);
+            Image *img = readImage(image);
+
+            waterMark(img, watermark);
+            writePPM(newImage, img);
+
             printMenu();
             break;
         }
@@ -518,9 +529,9 @@ void Menu(void)
         }
         default:
         {
+            printf("ERROR. Please, try again.");
+            printMenu();
             break;
         }
-
-
     }
 }

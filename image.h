@@ -58,7 +58,7 @@ Image *readImage(char *file);
 void changeIntensity(Image *img, int intensity);
 void changeIntensityGray(Image *img, int intensity);
 void addFilter(Image *img , char *filter);
-void waterMark(Image *img, const char* watermark);
+void waterMark(Image *img, char* watermark);
 
 void toGrey(Image *img);
 void toBin(Image *img);
